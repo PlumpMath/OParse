@@ -34,7 +34,7 @@ data = []
 for lane in lanes_sort:
 	data.append(numpy.zeros((len(tiles),), dtype='i2, i2, f4, f4, f4, f4, f4, f4, f4, f4, f4, f4, f4'))
 	for tile in tiles_sort:
-		data[lane-1][tiles_sort.index(tile)][0] = lane+1
+		data[lane-1][tiles_sort.index(tile)][0] = lane
 		data[lane-1][tiles_sort.index(tile)][1] = tile
 	for record in range(records):
 		a = struct.unpack('H', file.read(2))[0]
