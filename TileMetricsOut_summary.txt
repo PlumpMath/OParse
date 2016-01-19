@@ -1,0 +1,2 @@
+Lane,Tiles,Cluster density (k/mm2),Cluster density Pf (k/mm2),Clusters (k),Clusters Pf (k),% Pass Filter,Phasing R1,Prephasing R1,Phasing R2,Prephasing R2,Percent aligned R1,Percent aligned R2
+1,38,1220.5,1045.5,770.2,659.8,85.7,0.001,0.000,0.000,0.000,0.0,0.0

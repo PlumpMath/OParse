@@ -1,0 +1,26 @@
+[Header]
+IEMFileVersion,4
+Investigator Name,kxd
+Experiment Name,3.degp.sura.skp.azide
+Date,10/01/2016
+Workflow,GenerateFASTQ
+Application,FASTQ Only
+Assay,TruSeq LT
+Description,degp.sura.skp.azide
+Chemistry,Default
+
+[Reads]
+151
+
+[Settings]
+ReverseComplement,0
+Adapter,AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
+AdapterRead2,AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+
+[Data]
+Sample_ID,Sample_Name,Sample_Plate,Sample_Well,I7_Index_ID,index,Sample_Project,Description
+degP,,,,A004,TGACCA,,
+surA,,,,A006,GCCAAT,,
+skp,,,,A005,ACAGTG,,
+Azide25,,,,A003,TTAGGC,,
+Azide50,,,,A002,CGATGT,,
