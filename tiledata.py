@@ -7,7 +7,11 @@ metric = {100:'Cluster density (k/mm2)', 101:'Cluster density Pf (k/mm2)', 102:'
 codes = sorted(metric.keys())
 
 #read the header and file length
-file = open(sys.argv[1])
+try:
+	file = open(sys.argv[1] + '/InterOp/TileMetricsOut.bin', 'r')
+except IOError:
+	print '/InterOp/TileMetricsOut.bin not found...'
+	sys.exit()
 print 'File version', struct.unpack('B', file.read(1))[0]
 record_size = struct.unpack('B', file.read(1))[0]
 file.seek(0, 2)
