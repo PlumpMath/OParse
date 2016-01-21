@@ -48,7 +48,7 @@ for lane in lanes_sort:
 		data[lane-1][tiles_sort.index(b)][codes.index(c) + 2] = d
 
 #output all data
-fname_tiles = sys.argv[1].split('/')[-1].split('.')[0] + '_tiles.txt'
+fname_tiles = 'TileMetricsOut_tiles.txt'
 with open(fname_tiles, 'w') as tiles:
 	header = ['Lane', 'Tile'] + [metric[code] for code in codes][:-7] + ['% Pass Filter'] + [metric[code] for code in codes][4:-1]
 	print >>tiles, ','.join(header)
@@ -57,7 +57,7 @@ with open(fname_tiles, 'w') as tiles:
 			print >>tiles, '%i,%i,%.1f,%.1f,%.1f,%.1f,%.1f,%.3f,%.3f,%.3f,%.3f,%.1f,%.1f' %(row[0], row[1], row[2]/1000, row[3]/1000, row[4]/1000, row[5]/1000, (row[3]/row[2])*100, row[6], row[7], row[8], row[9], row[10], row[11])
 
 #output averages
-fname_summary = sys.argv[1].split('/')[-1].split('.')[0] + '_summary.txt'
+fname_summary = 'TileMetricsOut_summary.txt'
 with open(fname_summary, 'w') as summary:
 	header[1] = 'Tiles'
 	print >>summary, ','.join(header)

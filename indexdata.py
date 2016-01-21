@@ -32,16 +32,19 @@ tiles_sort = sorted(tiles)
 file.seek(2, 0)
 """
 
-file.read(1) #0
-
-for each in range(190):
-	print struct.unpack('H', file.read(2))[0]
-	file.read(4) #458754
-	print struct.unpack('6s', file.read(6))[0]
-        print struct.unpack('I', file.read(4))[0]
-	file.read(1) #0
-	strlen = struct.unpack('B', file.read(1))[0]
-	file.read(1) #0
-	print struct.unpack('%ss' %(strlen), file.read(strlen))[0]
-	file.read(4) #65536
-	
+#output all data
+fname_tiles = 'IndexMetricsOut_tiles.txt'
+with open(fname_tiles, 'w') as tiles:
+	print >>tiles, ','.join(['Tile', 'Index', 'Read count', 'Sample name'])
+	for each in range(190):
+		file.read(1) #0
+		a = struct.unpack('H', file.read(2))[0]
+		file.read(4)
+		b = struct.unpack('6s', file.read(6))[0]
+		c = struct.unpack('I', file.read(4))[0]
+		file.read(1) #0
+		strlen = struct.unpack('B', file.read(1))[0]
+		file.read(1) #0
+		d = struct.unpack('%ss' %(strlen), file.read(strlen))[0]
+		file.read(3)
+		print >>tiles, '%i,%s,%i,%s' %(int(a), b, int(c), d)
