@@ -10,41 +10,30 @@ except IOError:
 	sys.exit()
 
 print 'File version', struct.unpack('B', file.read(1))[0]
-record_size = struct.unpack('B', file.read(1))[0]
 file.seek(0, 2)
-length = file.tell()
-file.seek(2, 0)
-records = (length-2) / record_size
-print 'Records', records
-
-"""
-#get number of lanes and tiles
-lanes = set([])
-tiles = set([])
-for record in range(records):
-        lanes.update([struct.unpack('H', file.read(2))[0]])
-        tiles.update([struct.unpack('H', file.read(2))[0]])
-        file.read(6)
-print 'Lanes', len(lanes)
-print 'Tiles', len(tiles)
-lanes_sort = sorted(lanes)
-tiles_sort = sorted(tiles)
-file.seek(2, 0)
-"""
+length = file.tell() - 1
+print 'Length', length
+file.seek(1, 0)
 
 #output all data
 fname_tiles = 'IndexMetricsOut_tiles.txt'
 with open(fname_tiles, 'w') as tiles:
-	print >>tiles, ','.join(['Tile', 'Index', 'Read count', 'Sample name'])
-	for each in range(190):
-		file.read(1) #0
-		a = struct.unpack('H', file.read(2))[0]
-		file.read(4)
-		b = struct.unpack('6s', file.read(6))[0]
-		c = struct.unpack('I', file.read(4))[0]
-		file.read(1) #0
-		strlen = struct.unpack('B', file.read(1))[0]
-		file.read(1) #0
-		d = struct.unpack('%ss' %(strlen), file.read(strlen))[0]
-		file.read(3)
-		print >>tiles, '%i,%s,%i,%s' %(int(a), b, int(c), d)
+	print >>tiles, ','.join(['Tile', 'Swath', 'Tile', 'Bool1', 'Bool2', 'Index', 'Read count', 'Sample name', 'Project name'])
+	i = 0
+	while True:
+		lane = struct.unpack('B', file.read(1))[0] #Lane
+		swath = struct.unpack('B', file.read(1))[0] #Swath
+		tile = struct.unpack('H', file.read(2))[0] #Tile
+		bool1 = struct.unpack('?', file.read(1))[0] #?
+		bool2 = struct.unpack('?', file.read(1))[0] #?
+		indexlen = struct.unpack('H', file.read(2))[0]
+		index = struct.unpack('%ss' %(indexlen), file.read(indexlen))[0]
+		readcount = struct.unpack('i', file.read(4))[0]
+		samplelen = struct.unpack('H', file.read(2))[0]
+		sample = struct.unpack('%ss' %(samplelen), file.read(samplelen))[0]
+		projectlen = struct.unpack('H', file.read(2))[0]
+		project = struct.unpack('%ss' %(projectlen), file.read(projectlen))[0]
+		print >>tiles, '%i,%i,%i,%s,%s,%s,%i,%s,%s' %(lane, swath, tile, bool1, bool2, index, readcount, sample, project)
+		i += (16 + indexlen + samplelen + projectlen)
+		if i == length:
+			break
