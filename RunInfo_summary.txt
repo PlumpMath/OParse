@@ -1,3 +1,0 @@
-Number,Read length
-1,151
-2,6

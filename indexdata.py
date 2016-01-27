@@ -1,6 +1,6 @@
 import sys
+import os
 import struct
-import numpy
 
 #read the header and file length
 try:
@@ -16,9 +16,12 @@ print 'Length', length
 file.seek(1, 0)
 
 #output all data
-fname_tiles = 'IndexMetricsOut_tiles.txt'
-with open(fname_tiles, 'w') as tiles:
-	print >>tiles, ','.join(['Lane', 'Tile', 'Bool1', 'Bool2', 'Index1', 'Index2', 'Read count', 'Sample name', 'Project name'])
+output_dir = sys.argv[1] + '/InterOp/Text/'
+output_path = sys.argv[1] + '/InterOp/Text/IndexMetricsOut.txt'
+if not os.path.exists(output_dir):
+	os.makedirs(output_dir)
+with open(output_path, 'w') as outfile:
+	print >>outfile, ','.join(['Lane', 'Tile', 'Bool1', 'Bool2', 'Index1', 'Index2', 'Read count', 'Sample name', 'Project name'])
 	i = 0
 	while True:
 		lane = struct.unpack('B', file.read(1))[0] #Lane
@@ -33,7 +36,7 @@ with open(fname_tiles, 'w') as tiles:
 		sample = struct.unpack('%ss' %(samplelen), file.read(samplelen))[0]
 		projectlen = struct.unpack('H', file.read(2))[0]
 		project = struct.unpack('%ss' %(projectlen), file.read(projectlen))[0]
-		print >>tiles, '%i,%i,%s,%s,%s,%s,%i,%s,%s' %(lane, tile, bool1, bool2, index1, index2, readcount, sample, project)
+		print >>outfile, '%i,%i,%s,%s,%s,%s,%i,%s,%s' %(lane, tile, bool1, bool2, index1, index2, readcount, sample, project)
 		i += (16 + indexlen + samplelen + projectlen)
 		if i == length:
 			break
