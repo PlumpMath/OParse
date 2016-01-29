@@ -1,12 +1,19 @@
 import sys
 import os
 import struct
+import xml.etree.ElementTree as ET
 
 metric = {100:'Cluster density', 101:'Cluster density Pf', 102:'Clusters', 103:'Clusters Pf', 200:'Phasing R1', 201:'Prephasing R1', 202:'Phasing R2', 203:'Prephasing R2', 300:'Percent aligned R1', 301:'Percent aligned R2', 400:'Unknown'}
 
 codes = sorted(metric.keys())
 
 def tile_metrics(f):
+    #get the run id
+    tree = ET.parse(f + '/RunInfo.xml')
+    root = tree.getroot()
+    run_id = root[0].attrib['Id']
+    print 'Parsing tile data for run id', run_id
+    
     #read the header and file length
     try:
     	file = open(f + '/InterOp/TileMetricsOut.bin', 'r')
@@ -35,15 +42,15 @@ def tile_metrics(f):
     if not os.path.exists(output_dir):
     	os.makedirs(output_dir)
     with open(output_path, 'w') as outfile:
-    	print >>outfile, ','.join(['Lane', 'Tile'] + [metric[code] for code in codes])
+    	print >>outfile, ','.join(['Run Id', 'Lane', 'Tile'] + [metric[code] for code in codes])
     	for lane in lanes:
     		for tile in tiles:
-    			a = [lane, tile]
+    			a = [run_id, lane, tile]
     			for code in codes:
     				t = [record[3] for record in data if record[0] == lane and record[1] == tile and record[2] == code]
     				if t:
     					a.append(t[-1])
     				else:
     					a.append('')
-    			print >>outfile, '%i,%i,%.3f,%.3f,%.3f,%.3f,%.6f,%.6f,%.6f,%.6f,%.6f,%s,%.6f' %tuple(a)
+    			print >>outfile, '%s,%i,%i,%.3f,%.3f,%.3f,%.3f,%.6f,%.6f,%.6f,%.6f,%.6f,%s,%.6f' %tuple(a)
 
