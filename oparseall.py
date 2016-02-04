@@ -51,7 +51,6 @@ def main():
     
     # Parse targets
     for t in target_dirs:
-        print 'Parsing .bin data for ' + t
         tiledata.parse_tile_metrics(t)
         indexdata.parse_index_data(t)
         #tweet('Parsed new sequencing run data for ' + t, ts['dm_users'])
