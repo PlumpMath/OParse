@@ -4,7 +4,8 @@ import sys
 import xml.etree.ElementTree as et
 import twitter
 import tiledata
-from settings import *
+import indexdata
+from settings import ts, machines, base_path, run_pattern
 
 def tweet(message, users):
         t = twitter.Twitter(auth=twitter.OAuth(ts['token'], ts['token_key'], ts['con_secret_key'], ts['con_secret']))
@@ -45,14 +46,15 @@ def main():
     # Get all target dirs
     target_dirs = []
     for m in machines:
-        for d in id_dirs_to_parse(m, run_pattern):
+        for d in id_dirs_to_parse(m, run_pattern, overwrite=True):
             target_dirs.append(d)
     
     # Parse targets
     for t in target_dirs:
         print 'Parsing .bin data for ' + t
-        tiledata.tile_metrics(t)
-        tweet('Parsed new sequencing run data for ' + t, ts['dm_users'])
+        tiledata.parse_tile_metrics(t)
+        indexdata.parse_index_data(t)
+        #tweet('Parsed new sequencing run data for ' + t, ts['dm_users'])
         # TODO: SLACK API
     
 if __name__ == '__main__':
