@@ -7,7 +7,7 @@ metric = {100:'Cluster density', 101:'Cluster density Pf', 102:'Clusters', 103:'
 
 codes = sorted(metric.keys())
 
-def tile_metrics(f):
+def parse_tile_metrics(f):
     #get the run id
     tree = ET.parse(f + '/RunInfo.xml')
     root = tree.getroot()
@@ -53,4 +53,6 @@ def tile_metrics(f):
     				else:
     					a.append('')
     			print >>outfile, '%s,%i,%i,%.3f,%.3f,%.3f,%.3f,%.6f,%.6f,%.6f,%.6f,%.6f,%s,%.6f' %tuple(a)
-
+                
+if __name__ == '__main__':
+    parse_tile_metrics(sys.argv[1])               
