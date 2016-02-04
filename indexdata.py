@@ -21,7 +21,7 @@ def parse_index_data(f):
     tree = ET.parse(f + '/RunInfo.xml')
     root = tree.getroot()
     run_id = root[0].attrib['Id']
-    print 'Parsing tile data for run id', run_id
+    print 'Parsing index data for run id', run_id
 
     #output all data
     output_dir = f + '/InterOp/Text/'
